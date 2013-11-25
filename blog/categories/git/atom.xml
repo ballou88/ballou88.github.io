@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Git | Mike Ballou]]></title>
+  <link href="http://ballou88.github.io/blog/categories/git/atom.xml" rel="self"/>
+  <link href="http://ballou88.github.io/"/>
+  <updated>2013-11-25T09:51:25-08:00</updated>
+  <id>http://ballou88.github.io/</id>
+  <author>
+    <name><![CDATA[Mike Ballou]]></name>
+    <email><![CDATA[mikeballou@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Pushing testing branches to Heroku]]></title>
+    <link href="http://ballou88.github.io/blog/2013/01/15/pushing-testing-branches-to-heroku/"/>
+    <updated>2013-01-15T09:47:54-08:00</updated>
+    <id>http://ballou88.github.io/blog/2013/01/15/pushing-testing-branches-to-heroku</id>
+    <content type="html"><![CDATA[<p>I really love using heroku for my rails applications.  It provides me easy
+deployments, easy access to a host of add-ons, but mostly the fact that I can
+use the free plans to test/develop.  I often find that for small projects I will
+start developing and push to heroku after I have something significant to deploy.
+I will then continue to test/develop locally and only push new big features as
+they are completed.</p>
+
+<p>The problem with this is when you start developing multiple seperate feature
+branches and a client needs to remotely view the individual branches to review
+changes at different times.  So how do you solve this?  The problem is that
+heroku only deploys the master branch of any git repository.</p>
+
+<!--more-->
+
+
+<p>The solution is quite simple, first create a seperate heroku app, but this time
+instead of running</p>
+
+<p><code>
+git push heroku-staging master
+</code></p>
+
+<p>we are going to push our feature branch to the master branch of the heroku app</p>
+
+<p><code>
+git push heroku-staging feature-branch:master
+</code></p>
+
+<p>This will deploy our feature branch as the master branch on the heroku app.  To
+push another branch in the future we repeat the above with the &lsquo;-f&rsquo; flag</p>
+
+<p><code>
+git push -f heroku-staging feature2-branch:master
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

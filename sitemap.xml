@@ -1,53 +1,59 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://mikeballou.com/blog/2011/07/18/zsh-and-rake-parameters/</loc>
+        <loc>http://ballou88.github.io/blog/2011/07/18/zsh-and-rake-parameters/</loc>
         <lastmod>2013-11-24T20:35:54-08:00</lastmod>
     </url>
     <url>
-        <loc>http://mikeballou.com/blog/2012/12/18/taggable-mongoid-models/</loc>
+        <loc>http://ballou88.github.io/blog/2012/12/18/taggable-mongoid-models/</loc>
         <lastmod>2013-11-24T21:34:27-08:00</lastmod>
     </url>
     <url>
-        <loc>http://mikeballou.com/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec/</loc>
+        <loc>
+            http://ballou88.github.io/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec/
+        </loc>
         <lastmod>2013-11-24T21:35:53-08:00</lastmod>
     </url>
     <url>
-        <loc>http://mikeballou.com/blog/2013/01/21/serving-rails-assets-from-the-cloud/</loc>
+        <loc>http://ballou88.github.io/blog/2013/01/15/pushing-testing-branches-to-heroku/</loc>
+        <lastmod>2013-11-25T09:51:25-08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://ballou88.github.io/blog/2013/01/21/serving-rails-assets-from-the-cloud/</loc>
         <lastmod>2013-11-24T21:35:17-08:00</lastmod>
     </url>
     <url>
         <loc>
-            http://mikeballou.com/blog/2013/01/25/serving-fonts-from-s3-slash-cloudfront-for-firefox/
+            http://ballou88.github.io/blog/2013/01/25/serving-fonts-from-s3-slash-cloudfront-for-firefox/
         </loc>
         <lastmod>2013-11-24T21:36:46-08:00</lastmod>
     </url>
     <url>
-        <loc>http://mikeballou.com/blog/2013/08/26/hash-default-value/</loc>
+        <loc>http://ballou88.github.io/blog/2013/08/26/hash-default-value/</loc>
         <lastmod>2013-11-24T21:33:53-08:00</lastmod>
     </url>
     <url>
-        <loc>http://mikeballou.com/blog/archives/</loc>
-        <lastmod>2013-11-24T21:36:46-08:00</lastmod>
+        <loc>http://ballou88.github.io/blog/archives/</loc>
+        <lastmod>2013-11-25T09:51:25-08:00</lastmod>
     </url>
     <url>
-        <loc>http://mikeballou.com/blog/</loc>
-        <lastmod>2013-11-24T21:36:46-08:00</lastmod>
+        <loc>http://ballou88.github.io/blog/</loc>
+        <lastmod>2013-11-25T09:51:25-08:00</lastmod>
     </url>
     <url>
-        <loc>http://mikeballou.com/future-</loc>
+        <loc>http://ballou88.github.io/future-</loc>
         <lastmod>2013-11-24T09:43:43-08:00</lastmod>
     </url>
     <url>
-        <loc>http://mikeballou.com/</loc>
-        <lastmod>2013-11-24T21:36:46-08:00</lastmod>
+        <loc>http://ballou88.github.io/</loc>
+        <lastmod>2013-11-25T09:51:25-08:00</lastmod>
     </url>
     <url>
-        <loc>http://mikeballou.com/projects/</loc>
-        <lastmod>2013-11-24T22:12:59-08:00</lastmod>
+        <loc>http://ballou88.github.io/projects/</loc>
+        <lastmod>2013-11-24T22:25:59-08:00</lastmod>
     </url>
     <url>
-        <loc>http://mikeballou.com/robots.txt</loc>
+        <loc>http://ballou88.github.io/robots.txt</loc>
         <lastmod>2013-11-23T17:22:43-08:00</lastmod>
     </url>
 </urlset>

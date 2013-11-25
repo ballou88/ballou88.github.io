@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Rake | Mike Ballou]]></title>
-  <link href="http://mikeballou.com/blog/categories/rake/atom.xml" rel="self"/>
-  <link href="http://mikeballou.com/"/>
-  <updated>2013-11-24T22:23:28-08:00</updated>
-  <id>http://mikeballou.com/</id>
+  <link href="http://ballou88.github.io/blog/categories/rake/atom.xml" rel="self"/>
+  <link href="http://ballou88.github.io/"/>
+  <updated>2013-11-25T09:51:25-08:00</updated>
+  <id>http://ballou88.github.io/</id>
   <author>
     <name><![CDATA[Mike Ballou]]></name>
     <email><![CDATA[mikeballou@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ZSH and Rake Parameters]]></title>
-    <link href="http://mikeballou.com/blog/2011/07/18/zsh-and-rake-parameters/"/>
+    <link href="http://ballou88.github.io/blog/2011/07/18/zsh-and-rake-parameters/"/>
     <updated>2011-07-18T15:25:04-07:00</updated>
-    <id>http://mikeballou.com/blog/2011/07/18/zsh-and-rake-parameters</id>
+    <id>http://ballou88.github.io/blog/2011/07/18/zsh-and-rake-parameters</id>
     <content type="html"><![CDATA[<p>If you are using ZSH and trying to pass a parameter into a task:</p>
 
 <p><code>bash

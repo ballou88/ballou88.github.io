@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://mikeballou.com/sitemap.xml 
+Sitemap: http://ballou88.github.io/sitemap.xml 
