@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Hash | Mike Ballou]]></title>
+  <link href="http://mikeballou.com/blog/categories/hash/atom.xml" rel="self"/>
+  <link href="http://mikeballou.com/"/>
+  <updated>2013-11-24T21:36:47-08:00</updated>
+  <id>http://mikeballou.com/</id>
+  <author>
+    <name><![CDATA[Mike Ballou]]></name>
+    <email><![CDATA[mikeballou@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hash default value]]></title>
+    <link href="http://mikeballou.com/blog/2013/08/26/hash-default-value/"/>
+    <updated>2013-08-26T15:46:11-07:00</updated>
+    <id>http://mikeballou.com/blog/2013/08/26/hash-default-value</id>
+    <content type="html"><![CDATA[<p>The other day while working on a problem on <a href="http://exercism.io">exercism.io</a>
+I was wanting to keep a hash of arrays, and I wanted each key in the hash
+to default to a empty array.  So I started with</p>
+
+<p><code>ruby
+hash = Hash.new([])
+</code></p>
+
+<p>I then procedded to be able to append to the array for each key, so I tried:</p>
+
+<p><code>ruby
+hash[key] &lt;&lt; "value"
+</code></p>
+
+<p>I was expecting this to append to the empty array and set the key to:</p>
+
+<p><code>ruby
+["value"]
+</code></p>
+
+<!--more-->
+
+
+<p>Unfortunately this is not the case.  What actually happens is I am changing the
+default value for the hash like so:</p>
+
+<p><code>ruby
+hash = Hash.new([])
+p hash[2] # =&gt; []
+hash[1] &lt;&lt; "value"
+p hash #  =&gt; {}
+p hash[2] # =&gt; ["value"]
+</code></p>
+
+<p>The problem is that it is returning a reference to the default array and then
+modifying it in place.  So how do you fix this?  You need to use the block syntax
+for the default hash value.</p>
+
+<p><code>ruby
+hash = Hash.new {|hash, key| hash[key] = []}
+hash[1] &lt;&lt; "value"
+p hash # =&gt; { 1 =&gt; ["value"] }
+p hash[2] # =&gt; []
+</code></p>
+
+<p>If you want to look at it another way you can try:</p>
+
+<p>```ruby
+hash = Hash.new([])
+hash[1].object_id # => 70252744684240
+hash[2].obhect_id # => 70252744684240</p>
+
+<p>hash = Hash.new{|h,k| h[k] = []}
+hash[1].obejct_id # => 12321412312
+hash[2].obejct_id # => 41241442143
+```</p>
+
+<p>So with the first way, you get returned the same object every time.  But with
+the block syntax you a new</p>
+]]></content>
+  </entry>
+  
+</feed>

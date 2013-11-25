@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Mike Ballou]]></title>
-  <link href="http://ballou88.github.io/atom.xml" rel="self"/>
-  <link href="http://ballou88.github.io/"/>
-  <updated>2013-11-24T21:17:57-08:00</updated>
-  <id>http://ballou88.github.io/</id>
+  <link href="http://mikeballou.com/atom.xml" rel="self"/>
+  <link href="http://mikeballou.com/"/>
+  <updated>2013-11-24T21:36:47-08:00</updated>
+  <id>http://mikeballou.com/</id>
   <author>
     <name><![CDATA[Mike Ballou]]></name>
     <email><![CDATA[mikeballou@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Hash default value]]></title>
-    <link href="http://ballou88.github.io/blog/2013/08/26/hash-default-value/"/>
+    <link href="http://mikeballou.com/blog/2013/08/26/hash-default-value/"/>
     <updated>2013-08-26T15:46:11-07:00</updated>
-    <id>http://ballou88.github.io/blog/2013/08/26/hash-default-value</id>
+    <id>http://mikeballou.com/blog/2013/08/26/hash-default-value</id>
     <content type="html"><![CDATA[<p>The other day while working on a problem on <a href="http://exercism.io">exercism.io</a>
 I was wanting to keep a hash of arrays, and I wanted each key in the hash
 to default to a empty array.  So I started with</p>
@@ -44,7 +44,8 @@ to default to a empty array.  So I started with</p>
 <!--more-->
 
 
-<p>Unfortunately this is not the case.  What actually happens is I am changing the default value for the hash like so:</p>
+<p>Unfortunately this is not the case.  What actually happens is I am changing the
+default value for the hash like so:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -59,7 +60,9 @@ to default to a empty array.  So I started with</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The problem is that it is returning a reference to the default array and then modifying it in place.  So how do you fix this?  You need to use the block syntax for the default hash value.</p>
+<p>The problem is that it is returning a reference to the default array and then
+modifying it in place.  So how do you fix this?  You need to use the block syntax
+for the default hash value.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -91,15 +94,57 @@ to default to a empty array.  So I started with</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>So with the first way, you get returned the same object every time.  But with the block syntax you a new</p>
+<p>So with the first way, you get returned the same object every time.  But with
+the block syntax you a new</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Serving fonts from s3/cloudfront for firefox]]></title>
+    <link href="http://mikeballou.com/blog/2013/01/25/serving-fonts-from-s3-slash-cloudfront-for-firefox/"/>
+    <updated>2013-01-25T21:29:50-08:00</updated>
+    <id>http://mikeballou.com/blog/2013/01/25/serving-fonts-from-s3-slash-cloudfront-for-firefox</id>
+    <content type="html"><![CDATA[<p>I recently started using s3/cloudfront to host assets for a few apps that I am
+working on.  Initially I thought everything just worked.  I moved all of my
+assets to S3 and updated all of their urls to point to the s3/cloudfront
+location.  All seemed well until I looked at Firefox.  My @font-face fonts were
+not rendering in firefox, which was odd to me.  After a long search it seems
+that you need to use <a href="http://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS</a>
+to enable it.  To do this log into you AWS console and look at your buckets.
+For the bucket serving the fonts you want to click on permissions and then edit
+CORS configuration.  In here you want to add something like</p>
+
+<!-- more -->
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;CORSConfiguration</span> <span class="na">xmlns=</span><span class="s">&quot;http://s3.amazonaws.com/doc/2006-03-01/&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;CORSRule&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;AllowedOrigin&gt;</span>*<span class="nt">&lt;/AllowedOrigin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;AllowedMethod&gt;</span>GET<span class="nt">&lt;/AllowedMethod&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/CORSRule&gt;</span>
+</span><span class='line'><span class="nt">&lt;/CORSConfiguration&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can replace the * in the AllowedOrigin to be the domain that you will be
+serving the your webpage from.  You can add multiple AllowedOrigin tags for each
+domain you need to have access to the font-face (e.g. www.example.com, example.com).</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Serving Rails assets from the cloud]]></title>
-    <link href="http://ballou88.github.io/blog/2013/01/21/serving-rails-assets-from-the-cloud/"/>
+    <link href="http://mikeballou.com/blog/2013/01/21/serving-rails-assets-from-the-cloud/"/>
     <updated>2013-01-21T14:57:44-08:00</updated>
-    <id>http://ballou88.github.io/blog/2013/01/21/serving-rails-assets-from-the-cloud</id>
+    <id>http://mikeballou.com/blog/2013/01/21/serving-rails-assets-from-the-cloud</id>
     <content type="html"><![CDATA[<p>Recently I have had to build several high performance websites.
 These sites were simple sites but were heavy in images and we were
 expecting large amounts of traffic.  I was using heroku to host the
@@ -186,9 +231,9 @@ s3 urls (provided you used the rails view helpers).</p>
   
   <entry>
     <title type="html"><![CDATA[Stubbing Paperclip Attachments in Rspec]]></title>
-    <link href="http://ballou88.github.io/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec/"/>
+    <link href="http://mikeballou.com/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec/"/>
     <updated>2012-12-25T14:55:52-08:00</updated>
-    <id>http://ballou88.github.io/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec</id>
+    <id>http://mikeballou.com/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec</id>
     <content type="html"><![CDATA[<p>If you are using RSpec, paperclip, and your models are validating
 the existence of attachments, you are going to want to
 stub out the saving of the attachments.  You will want to do
@@ -253,9 +298,9 @@ that you need to clean up (those saved by running your test).</p>
   
   <entry>
     <title type="html"><![CDATA[Taggable Mongoid Models]]></title>
-    <link href="http://ballou88.github.io/blog/2012/12/18/taggable-mongoid-models/"/>
+    <link href="http://mikeballou.com/blog/2012/12/18/taggable-mongoid-models/"/>
     <updated>2012-12-18T14:51:01-08:00</updated>
-    <id>http://ballou88.github.io/blog/2012/12/18/taggable-mongoid-models</id>
+    <id>http://mikeballou.com/blog/2012/12/18/taggable-mongoid-models</id>
     <content type="html"><![CDATA[<p>I was looking for a simple way to add tagging to my Mongoid 3+ models and most of the options I found were for Mongoid 2 only.  Luckily I stumbled upon Mongoid Simple Tags from Mauro Torres(<a href="https://github.com/chebyte">chebyte</a>) a ruby gem that supports Mongoid 3+.</p>
 
 <p>Its a nice simple way to add tagging.  Simply include &ldquo;Mongoid::Document::Taggable&rdquo; to your model.</p>
@@ -323,9 +368,9 @@ that you need to clean up (those saved by running your test).</p>
   
   <entry>
     <title type="html"><![CDATA[ZSH and Rake Parameters]]></title>
-    <link href="http://ballou88.github.io/blog/2011/07/18/zsh-and-rake-parameters/"/>
+    <link href="http://mikeballou.com/blog/2011/07/18/zsh-and-rake-parameters/"/>
     <updated>2011-07-18T15:25:04-07:00</updated>
-    <id>http://ballou88.github.io/blog/2011/07/18/zsh-and-rake-parameters</id>
+    <id>http://mikeballou.com/blog/2011/07/18/zsh-and-rake-parameters</id>
     <content type="html"><![CDATA[<p>If you are using ZSH and trying to pass a parameter into a task:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>

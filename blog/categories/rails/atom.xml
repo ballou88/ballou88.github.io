@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Rails | Mike Ballou]]></title>
+  <link href="http://mikeballou.com/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://mikeballou.com/"/>
+  <updated>2013-11-24T21:36:47-08:00</updated>
+  <id>http://mikeballou.com/</id>
+  <author>
+    <name><![CDATA[Mike Ballou]]></name>
+    <email><![CDATA[mikeballou@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Serving Rails assets from the cloud]]></title>
+    <link href="http://mikeballou.com/blog/2013/01/21/serving-rails-assets-from-the-cloud/"/>
+    <updated>2013-01-21T14:57:44-08:00</updated>
+    <id>http://mikeballou.com/blog/2013/01/21/serving-rails-assets-from-the-cloud</id>
+    <content type="html"><![CDATA[<p>Recently I have had to build several high performance websites.
+These sites were simple sites but were heavy in images and we were
+expecting large amounts of traffic.  I was using heroku to host the
+sites so I could easily scale to a large number of dynos but why
+have all of the excess http request for all of the assets hit my
+heroku app too.</p>
+
+<p>So I knew I was going to offload all of my images, css, fonts, and
+javascript onto s3 and maybe even run cloudfront to speed things up
+further, but managing:</p>
+
+<ol>
+<li>copying all of those assets to s3</li>
+<li>being sure that every time I change an asset I upload it to S3</li>
+<li>managing the urls to the assets</li>
+</ol>
+
+
+<p>was going to be a pain in the ass.</p>
+
+<p>Luckily with the help of Rails 3.2&rsquo;s asset pipeline and a little
+gem called &lsquo;asset_sync&rsquo; everything can be made much simpler.</p>
+
+<!--more-->
+
+
+<p>You start by adding the gem to you Gemfile:</p>
+
+<p><code>ruby
+gem 'asset_sync'
+</code>
+and bundle install</p>
+
+<p>Next we need to add the asset_host to our production.rb</p>
+
+<p>```ruby</p>
+
+<h1>config/environments/production.rb</h1>
+
+<p>config.action_controller.asset_host = &ldquo;//#{ENV[&lsquo;FOG_DIRECTORY&rsquo;]}.s3.amazonaws.com&rdquo;
+```</p>
+
+<p>Then we need to set some config variables on heroku for the gem
+to use.  You will need your s3 bucket name, aws access key and aws
+secret key.  You can optionally add that you want the assets
+gzipped and what AWS region you bucket is located in.</p>
+
+<p>```bash
+heroku config:add AWS_ACCESS_KEY_ID=xxxx
+heroku config:add AWS_SECRET_ACCESS_KEY=xxxx
+heroku config:add FOG_DIRECTORY=xxxx
+heroku config:add FOG_PROVIDER=AWS</p>
+
+<h1>and optionally:</h1>
+
+<p>heroku config:add FOG_REGION=us-west-1
+heroku config:add ASSET_SYNC_GZIP_COMPRESSION=true
+```</p>
+
+<p>If you are going to use this in production that is all you need,
+but if you are running your app in any other environment
+(e.g. staging) you will need to run:</p>
+
+<p><code>bash
+heroku labs:enable user-env-compile -a myapp
+</code></p>
+
+<p>Without this everything will be compiled as if in production
+which may cause some issues.</p>
+
+<p>Now the next time you push to heroku your assets will be
+uploaded to s3 and all of you links/sources will point to the
+s3 urls (provided you used the rails view helpers).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Stubbing Paperclip Attachments in Rspec]]></title>
+    <link href="http://mikeballou.com/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec/"/>
+    <updated>2012-12-25T14:55:52-08:00</updated>
+    <id>http://mikeballou.com/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec</id>
+    <content type="html"><![CDATA[<p>If you are using RSpec, paperclip, and your models are validating
+the existence of attachments, you are going to want to
+stub out the saving of the attachments.  You will want to do
+this to speed up your test, keep from having extraneous files
+that you need to clean up (those saved by running your test).</p>
+
+<p>Adding the code below to my RSpec suppot folder, sped up my testing suite from 1~2 minutes to about 10-15sec.</p>
+
+<!--more-->
+
+
+<p>```ruby
+module Paperclip
+  class Attachment</p>
+
+<pre><code>def save
+  @queued_for_delete = []
+  @queued_for_write = {}
+  true
+end
+</code></pre>
+
+<p>  private</p>
+
+<pre><code>def post_process
+  true
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  # This is only necessary if you&rsquo;re validating the content-type
+  # class ContentTypeDetector
+  # private
+  #   def empty?
+  #     false
+  #   end
+  # end
+end
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Taggable Mongoid Models]]></title>
+    <link href="http://mikeballou.com/blog/2012/12/18/taggable-mongoid-models/"/>
+    <updated>2012-12-18T14:51:01-08:00</updated>
+    <id>http://mikeballou.com/blog/2012/12/18/taggable-mongoid-models</id>
+    <content type="html"><![CDATA[<p>I was looking for a simple way to add tagging to my Mongoid 3+ models and most of the options I found were for Mongoid 2 only.  Luckily I stumbled upon Mongoid Simple Tags from Mauro Torres(<a href="https://github.com/chebyte">chebyte</a>) a ruby gem that supports Mongoid 3+.</p>
+
+<p>Its a nice simple way to add tagging.  Simply include &ldquo;Mongoid::Document::Taggable&rdquo; to your model.</p>
+
+<p>```ruby
+class User
+  include Mongoid::Document
+  include Mongoid::Document::Taggable
+end</p>
+
+<p>```</p>
+
+<p>Once added you can assign tags through the #tag_list= method.  This assumes a string of comma seperated tags, which are then stored in the tags field as an array.</p>
+
+<p><code>ruby
+u = User.create(:name =&gt; "Tuquito", tag_list: "linux, tucuman, free software")
+</code></p>
+
+<!--more-->
+
+
+<p>You can retrieve back comma seperated list of tags with the #tag_list method or an array of tags on the object with the #tags method.</p>
+
+<p>```ruby
+User.tag_list #=>[&ldquo;free software&rdquo;, &ldquo;linux&rdquo;, &ldquo;tucuman&rdquo;]
+u.tags     # => [&ldquo;linux&rdquo;,&ldquo;tucuman&rdquo;,&ldquo;free software&rdquo;]</p>
+
+<p>```</p>
+
+<p>Mongoid-simple-tags provides a way to search for instances with a tag via the ::tagged_with method.  This can either be given a single tag or an array of tags.  In the later case it will return all instance that have any of the given tags.  Unfortunately there is not currently a method to search for instances matching all tags in an array.</p>
+
+<p><code>ruby
+User.tagged_with("linux") # =&gt; u
+User.tagged_with(["tucuman", "free software"]) # =&gt; u
+</code></p>
+
+<p>You can also get a list of all tags used on a model with there associated counts, with the ::all_tags method.  This is accomplished using MongoDb&rsquo;s map-reduce functions.</p>
+
+<p>```ruby</p>
+
+<h1>using map-reduce function</h1>
+
+<p>User.all_tags #=>[{:name=>&ldquo;free software&rdquo;, :count=>1}, {:name=>&ldquo;linux&rdquo;, :count=>2}, {:name=>&ldquo;tucuman&rdquo;, :count=>1}]
+```</p>
+
+<p>Lastly, if you simply would like an array of all tags used on instances of a model there is the ::tag_list method.</p>
+
+<p><code>ruby
+User.tag_list #=&gt;["free software", "linux", "tucuman"]
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Rspec | Mike Ballou]]></title>
+  <link href="http://mikeballou.com/blog/categories/rspec/atom.xml" rel="self"/>
+  <link href="http://mikeballou.com/"/>
+  <updated>2013-11-24T21:36:47-08:00</updated>
+  <id>http://mikeballou.com/</id>
+  <author>
+    <name><![CDATA[Mike Ballou]]></name>
+    <email><![CDATA[mikeballou@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Stubbing Paperclip Attachments in Rspec]]></title>
+    <link href="http://mikeballou.com/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec/"/>
+    <updated>2012-12-25T14:55:52-08:00</updated>
+    <id>http://mikeballou.com/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec</id>
+    <content type="html"><![CDATA[<p>If you are using RSpec, paperclip, and your models are validating
+the existence of attachments, you are going to want to
+stub out the saving of the attachments.  You will want to do
+this to speed up your test, keep from having extraneous files
+that you need to clean up (those saved by running your test).</p>
+
+<p>Adding the code below to my RSpec suppot folder, sped up my testing suite from 1~2 minutes to about 10-15sec.</p>
+
+<!--more-->
+
+
+<p>```ruby
+module Paperclip
+  class Attachment</p>
+
+<pre><code>def save
+  @queued_for_delete = []
+  @queued_for_write = {}
+  true
+end
+</code></pre>
+
+<p>  private</p>
+
+<pre><code>def post_process
+  true
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  # This is only necessary if you&rsquo;re validating the content-type
+  # class ContentTypeDetector
+  # private
+  #   def empty?
+  #     false
+  #   end
+  # end
+end
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

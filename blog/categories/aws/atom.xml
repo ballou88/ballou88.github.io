@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: AWS | Mike Ballou]]></title>
+  <link href="http://mikeballou.com/blog/categories/aws/atom.xml" rel="self"/>
+  <link href="http://mikeballou.com/"/>
+  <updated>2013-11-24T21:36:47-08:00</updated>
+  <id>http://mikeballou.com/</id>
+  <author>
+    <name><![CDATA[Mike Ballou]]></name>
+    <email><![CDATA[mikeballou@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Serving fonts from s3/cloudfront for firefox]]></title>
+    <link href="http://mikeballou.com/blog/2013/01/25/serving-fonts-from-s3-slash-cloudfront-for-firefox/"/>
+    <updated>2013-01-25T21:29:50-08:00</updated>
+    <id>http://mikeballou.com/blog/2013/01/25/serving-fonts-from-s3-slash-cloudfront-for-firefox</id>
+    <content type="html"><![CDATA[<p>I recently started using s3/cloudfront to host assets for a few apps that I am
+working on.  Initially I thought everything just worked.  I moved all of my
+assets to S3 and updated all of their urls to point to the s3/cloudfront
+location.  All seemed well until I looked at Firefox.  My @font-face fonts were
+not rendering in firefox, which was odd to me.  After a long search it seems
+that you need to use <a href="http://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS</a>
+to enable it.  To do this log into you AWS console and look at your buckets.
+For the bucket serving the fonts you want to click on permissions and then edit
+CORS configuration.  In here you want to add something like</p>
+
+<!-- more -->
+
+
+<p>```xml
+&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;UTF-8&rdquo;?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/"></p>
+
+<pre><code>&lt;CORSRule&gt;
+    &lt;AllowedOrigin&gt;*&lt;/AllowedOrigin&gt;
+    &lt;AllowedMethod&gt;GET&lt;/AllowedMethod&gt;
+&lt;/CORSRule&gt;
+</code></pre>
+
+<p></CORSConfiguration>
+```</p>
+
+<p>You can replace the * in the AllowedOrigin to be the domain that you will be
+serving the your webpage from.  You can add multiple AllowedOrigin tags for each
+domain you need to have access to the font-face (e.g. www.example.com, example.com).</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Serving Rails assets from the cloud]]></title>
+    <link href="http://mikeballou.com/blog/2013/01/21/serving-rails-assets-from-the-cloud/"/>
+    <updated>2013-01-21T14:57:44-08:00</updated>
+    <id>http://mikeballou.com/blog/2013/01/21/serving-rails-assets-from-the-cloud</id>
+    <content type="html"><![CDATA[<p>Recently I have had to build several high performance websites.
+These sites were simple sites but were heavy in images and we were
+expecting large amounts of traffic.  I was using heroku to host the
+sites so I could easily scale to a large number of dynos but why
+have all of the excess http request for all of the assets hit my
+heroku app too.</p>
+
+<p>So I knew I was going to offload all of my images, css, fonts, and
+javascript onto s3 and maybe even run cloudfront to speed things up
+further, but managing:</p>
+
+<ol>
+<li>copying all of those assets to s3</li>
+<li>being sure that every time I change an asset I upload it to S3</li>
+<li>managing the urls to the assets</li>
+</ol>
+
+
+<p>was going to be a pain in the ass.</p>
+
+<p>Luckily with the help of Rails 3.2&rsquo;s asset pipeline and a little
+gem called &lsquo;asset_sync&rsquo; everything can be made much simpler.</p>
+
+<!--more-->
+
+
+<p>You start by adding the gem to you Gemfile:</p>
+
+<p><code>ruby
+gem 'asset_sync'
+</code>
+and bundle install</p>
+
+<p>Next we need to add the asset_host to our production.rb</p>
+
+<p>```ruby</p>
+
+<h1>config/environments/production.rb</h1>
+
+<p>config.action_controller.asset_host = &ldquo;//#{ENV[&lsquo;FOG_DIRECTORY&rsquo;]}.s3.amazonaws.com&rdquo;
+```</p>
+
+<p>Then we need to set some config variables on heroku for the gem
+to use.  You will need your s3 bucket name, aws access key and aws
+secret key.  You can optionally add that you want the assets
+gzipped and what AWS region you bucket is located in.</p>
+
+<p>```bash
+heroku config:add AWS_ACCESS_KEY_ID=xxxx
+heroku config:add AWS_SECRET_ACCESS_KEY=xxxx
+heroku config:add FOG_DIRECTORY=xxxx
+heroku config:add FOG_PROVIDER=AWS</p>
+
+<h1>and optionally:</h1>
+
+<p>heroku config:add FOG_REGION=us-west-1
+heroku config:add ASSET_SYNC_GZIP_COMPRESSION=true
+```</p>
+
+<p>If you are going to use this in production that is all you need,
+but if you are running your app in any other environment
+(e.g. staging) you will need to run:</p>
+
+<p><code>bash
+heroku labs:enable user-env-compile -a myapp
+</code></p>
+
+<p>Without this everything will be compiled as if in production
+which may cause some issues.</p>
+
+<p>Now the next time you push to heroku your assets will be
+uploaded to s3 and all of you links/sources will point to the
+s3 urls (provided you used the rails view helpers).</p>
+]]></content>
+  </entry>
+  
+</feed>

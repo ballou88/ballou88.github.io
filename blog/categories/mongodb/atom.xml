@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Mongodb | Mike Ballou]]></title>
+  <link href="http://mikeballou.com/blog/categories/mongodb/atom.xml" rel="self"/>
+  <link href="http://mikeballou.com/"/>
+  <updated>2013-11-24T21:36:47-08:00</updated>
+  <id>http://mikeballou.com/</id>
+  <author>
+    <name><![CDATA[Mike Ballou]]></name>
+    <email><![CDATA[mikeballou@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Taggable Mongoid Models]]></title>
+    <link href="http://mikeballou.com/blog/2012/12/18/taggable-mongoid-models/"/>
+    <updated>2012-12-18T14:51:01-08:00</updated>
+    <id>http://mikeballou.com/blog/2012/12/18/taggable-mongoid-models</id>
+    <content type="html"><![CDATA[<p>I was looking for a simple way to add tagging to my Mongoid 3+ models and most of the options I found were for Mongoid 2 only.  Luckily I stumbled upon Mongoid Simple Tags from Mauro Torres(<a href="https://github.com/chebyte">chebyte</a>) a ruby gem that supports Mongoid 3+.</p>
+
+<p>Its a nice simple way to add tagging.  Simply include &ldquo;Mongoid::Document::Taggable&rdquo; to your model.</p>
+
+<p>```ruby
+class User
+  include Mongoid::Document
+  include Mongoid::Document::Taggable
+end</p>
+
+<p>```</p>
+
+<p>Once added you can assign tags through the #tag_list= method.  This assumes a string of comma seperated tags, which are then stored in the tags field as an array.</p>
+
+<p><code>ruby
+u = User.create(:name =&gt; "Tuquito", tag_list: "linux, tucuman, free software")
+</code></p>
+
+<!--more-->
+
+
+<p>You can retrieve back comma seperated list of tags with the #tag_list method or an array of tags on the object with the #tags method.</p>
+
+<p>```ruby
+User.tag_list #=>[&ldquo;free software&rdquo;, &ldquo;linux&rdquo;, &ldquo;tucuman&rdquo;]
+u.tags     # => [&ldquo;linux&rdquo;,&ldquo;tucuman&rdquo;,&ldquo;free software&rdquo;]</p>
+
+<p>```</p>
+
+<p>Mongoid-simple-tags provides a way to search for instances with a tag via the ::tagged_with method.  This can either be given a single tag or an array of tags.  In the later case it will return all instance that have any of the given tags.  Unfortunately there is not currently a method to search for instances matching all tags in an array.</p>
+
+<p><code>ruby
+User.tagged_with("linux") # =&gt; u
+User.tagged_with(["tucuman", "free software"]) # =&gt; u
+</code></p>
+
+<p>You can also get a list of all tags used on a model with there associated counts, with the ::all_tags method.  This is accomplished using MongoDb&rsquo;s map-reduce functions.</p>
+
+<p>```ruby</p>
+
+<h1>using map-reduce function</h1>
+
+<p>User.all_tags #=>[{:name=>&ldquo;free software&rdquo;, :count=>1}, {:name=>&ldquo;linux&rdquo;, :count=>2}, {:name=>&ldquo;tucuman&rdquo;, :count=>1}]
+```</p>
+
+<p>Lastly, if you simply would like an array of all tags used on instances of a model there is the ::tag_list method.</p>
+
+<p><code>ruby
+User.tag_list #=&gt;["free software", "linux", "tucuman"]
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ruby | Mike Ballou]]></title>
+  <link href="http://mikeballou.com/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://mikeballou.com/"/>
+  <updated>2013-11-24T21:36:47-08:00</updated>
+  <id>http://mikeballou.com/</id>
+  <author>
+    <name><![CDATA[Mike Ballou]]></name>
+    <email><![CDATA[mikeballou@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hash default value]]></title>
+    <link href="http://mikeballou.com/blog/2013/08/26/hash-default-value/"/>
+    <updated>2013-08-26T15:46:11-07:00</updated>
+    <id>http://mikeballou.com/blog/2013/08/26/hash-default-value</id>
+    <content type="html"><![CDATA[<p>The other day while working on a problem on <a href="http://exercism.io">exercism.io</a>
+I was wanting to keep a hash of arrays, and I wanted each key in the hash
+to default to a empty array.  So I started with</p>
+
+<p><code>ruby
+hash = Hash.new([])
+</code></p>
+
+<p>I then procedded to be able to append to the array for each key, so I tried:</p>
+
+<p><code>ruby
+hash[key] &lt;&lt; "value"
+</code></p>
+
+<p>I was expecting this to append to the empty array and set the key to:</p>
+
+<p><code>ruby
+["value"]
+</code></p>
+
+<!--more-->
+
+
+<p>Unfortunately this is not the case.  What actually happens is I am changing the
+default value for the hash like so:</p>
+
+<p><code>ruby
+hash = Hash.new([])
+p hash[2] # =&gt; []
+hash[1] &lt;&lt; "value"
+p hash #  =&gt; {}
+p hash[2] # =&gt; ["value"]
+</code></p>
+
+<p>The problem is that it is returning a reference to the default array and then
+modifying it in place.  So how do you fix this?  You need to use the block syntax
+for the default hash value.</p>
+
+<p><code>ruby
+hash = Hash.new {|hash, key| hash[key] = []}
+hash[1] &lt;&lt; "value"
+p hash # =&gt; { 1 =&gt; ["value"] }
+p hash[2] # =&gt; []
+</code></p>
+
+<p>If you want to look at it another way you can try:</p>
+
+<p>```ruby
+hash = Hash.new([])
+hash[1].object_id # => 70252744684240
+hash[2].obhect_id # => 70252744684240</p>
+
+<p>hash = Hash.new{|h,k| h[k] = []}
+hash[1].obejct_id # => 12321412312
+hash[2].obejct_id # => 41241442143
+```</p>
+
+<p>So with the first way, you get returned the same object every time.  But with
+the block syntax you a new</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Stubbing Paperclip Attachments in Rspec]]></title>
+    <link href="http://mikeballou.com/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec/"/>
+    <updated>2012-12-25T14:55:52-08:00</updated>
+    <id>http://mikeballou.com/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec</id>
+    <content type="html"><![CDATA[<p>If you are using RSpec, paperclip, and your models are validating
+the existence of attachments, you are going to want to
+stub out the saving of the attachments.  You will want to do
+this to speed up your test, keep from having extraneous files
+that you need to clean up (those saved by running your test).</p>
+
+<p>Adding the code below to my RSpec suppot folder, sped up my testing suite from 1~2 minutes to about 10-15sec.</p>
+
+<!--more-->
+
+
+<p>```ruby
+module Paperclip
+  class Attachment</p>
+
+<pre><code>def save
+  @queued_for_delete = []
+  @queued_for_write = {}
+  true
+end
+</code></pre>
+
+<p>  private</p>
+
+<pre><code>def post_process
+  true
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  # This is only necessary if you&rsquo;re validating the content-type
+  # class ContentTypeDetector
+  # private
+  #   def empty?
+  #     false
+  #   end
+  # end
+end
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Taggable Mongoid Models]]></title>
+    <link href="http://mikeballou.com/blog/2012/12/18/taggable-mongoid-models/"/>
+    <updated>2012-12-18T14:51:01-08:00</updated>
+    <id>http://mikeballou.com/blog/2012/12/18/taggable-mongoid-models</id>
+    <content type="html"><![CDATA[<p>I was looking for a simple way to add tagging to my Mongoid 3+ models and most of the options I found were for Mongoid 2 only.  Luckily I stumbled upon Mongoid Simple Tags from Mauro Torres(<a href="https://github.com/chebyte">chebyte</a>) a ruby gem that supports Mongoid 3+.</p>
+
+<p>Its a nice simple way to add tagging.  Simply include &ldquo;Mongoid::Document::Taggable&rdquo; to your model.</p>
+
+<p>```ruby
+class User
+  include Mongoid::Document
+  include Mongoid::Document::Taggable
+end</p>
+
+<p>```</p>
+
+<p>Once added you can assign tags through the #tag_list= method.  This assumes a string of comma seperated tags, which are then stored in the tags field as an array.</p>
+
+<p><code>ruby
+u = User.create(:name =&gt; "Tuquito", tag_list: "linux, tucuman, free software")
+</code></p>
+
+<!--more-->
+
+
+<p>You can retrieve back comma seperated list of tags with the #tag_list method or an array of tags on the object with the #tags method.</p>
+
+<p>```ruby
+User.tag_list #=>[&ldquo;free software&rdquo;, &ldquo;linux&rdquo;, &ldquo;tucuman&rdquo;]
+u.tags     # => [&ldquo;linux&rdquo;,&ldquo;tucuman&rdquo;,&ldquo;free software&rdquo;]</p>
+
+<p>```</p>
+
+<p>Mongoid-simple-tags provides a way to search for instances with a tag via the ::tagged_with method.  This can either be given a single tag or an array of tags.  In the later case it will return all instance that have any of the given tags.  Unfortunately there is not currently a method to search for instances matching all tags in an array.</p>
+
+<p><code>ruby
+User.tagged_with("linux") # =&gt; u
+User.tagged_with(["tucuman", "free software"]) # =&gt; u
+</code></p>
+
+<p>You can also get a list of all tags used on a model with there associated counts, with the ::all_tags method.  This is accomplished using MongoDb&rsquo;s map-reduce functions.</p>
+
+<p>```ruby</p>
+
+<h1>using map-reduce function</h1>
+
+<p>User.all_tags #=>[{:name=>&ldquo;free software&rdquo;, :count=>1}, {:name=>&ldquo;linux&rdquo;, :count=>2}, {:name=>&ldquo;tucuman&rdquo;, :count=>1}]
+```</p>
+
+<p>Lastly, if you simply would like an array of all tags used on instances of a model there is the ::tag_list method.</p>
+
+<p><code>ruby
+User.tag_list #=&gt;["free software", "linux", "tucuman"]
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

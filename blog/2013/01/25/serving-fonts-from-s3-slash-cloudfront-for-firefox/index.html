@@ -8,14 +8,14 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Stubbing Paperclip Attachments in Rspec - Mike Ballou</title>
+    <title>Serving fonts from s3/cloudfront for firefox - Mike Ballou</title>
     <meta name="author" content="Mike Ballou">
     
-    <meta name="description" content="Stubbing Paperclip Attachments in Rspec Dec 25th, 2012 Rails Paperclip Rspec Ruby Comments If you are using RSpec, paperclip, and your models are &hellip;">
+    <meta name="description" content="Serving fonts from s3/cloudfront for firefox Jan 25th, 2013 AWS S3 CORS Firefox IE Comments I recently started using s3/cloudfront to host assets &hellip;">
     
     <meta name="viewport" content="width=device-width">
     
-    <link rel="canonical" href="http://mikeballou.com/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec">
+    <link rel="canonical" href="http://mikeballou.com/blog/2013/01/25/serving-fonts-from-s3-slash-cloudfront-for-firefox">
     <link href="/favicon.png" rel="icon">
     <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet">
     <link href="//atom.xml" rel="alternate" title="Mike Ballou" type="application/atom+xml">
@@ -59,7 +59,7 @@
           <article class="post">
   <header>
   
-  <h1 class="title indent">Stubbing Paperclip Attachments in Rspec</h1>
+  <h1 class="title indent">Serving fonts from s3/cloudfront for firefox</h1>
   
 
   
@@ -76,7 +76,7 @@
   
 
 
-<time class="pull-left" datetime="2012-12-25T14:55:52-08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Dec 25<span>th</span>, 2012</time>
+<time class="pull-left" datetime="2013-01-25T21:29:50-08:00" pubdate data-updated="true"><i class="icon-calendar"></i> Jan 25<span>th</span>, 2013</time>
     
 
 
@@ -86,13 +86,15 @@
     <i class="icon-tags"></i>
     <ul class="tags unstyled">
     
-      <li><a href="/blog/categories/Rails/">Rails</a></li>
+      <li><a href="/blog/categories/AWS/">AWS</a></li>
     
-      <li><a href="/blog/categories/Paperclip/">Paperclip</a></li>
+      <li><a href="/blog/categories/S3/">S3</a></li>
     
-      <li><a href="/blog/categories/Rspec/">Rspec</a></li>
+      <li><a href="/blog/categories/CORS/">CORS</a></li>
     
-      <li><a href="/blog/categories/Ruby/">Ruby</a></li>
+      <li><a href="/blog/categories/Firefox/">Firefox</a></li>
+    
+      <li><a href="/blog/categories/IE/">IE</a></li>
     
     </ul>
   </div>
@@ -110,17 +112,17 @@
 
 
 
-  <p>If you are using RSpec, paperclip, and your models are validating
-the existence of attachments, you are going to want to
-stub out the saving of the attachments.  You will want to do
-this to speed up your test, keep from having extraneous files
-that you need to clean up (those saved by running your test).</p>
+  <p>I recently started using s3/cloudfront to host assets for a few apps that I am
+working on.  Initially I thought everything just worked.  I moved all of my
+assets to S3 and updated all of their urls to point to the s3/cloudfront
+location.  All seemed well until I looked at Firefox.  My @font-face fonts were
+not rendering in firefox, which was odd to me.  After a long search it seems
+that you need to use <a href="http://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS</a>
+to enable it.  To do this log into you AWS console and look at your buckets.
+For the bucket serving the fonts you want to click on permissions and then edit
+CORS configuration.  In here you want to add something like</p>
 
-<p>Adding the code below to my RSpec suppot folder, sped up my testing suite from 1~2 minutes to about 10-15sec.</p>
-
-<!--more-->
-
-
+<!-- more -->
 
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -130,45 +132,19 @@ that you need to clean up (those saved by running your test).</p>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Paperclip</span>
-</span><span class='line'>  <span class="k">class</span> <span class="nc">Attachment</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">save</span>
-</span><span class='line'>      <span class="vi">@queued_for_delete</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'>      <span class="vi">@queued_for_write</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span class='line'>      <span class="kp">true</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kp">private</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nf">post_process</span>
-</span><span class='line'>      <span class="kp">true</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># This is only necessary if you&#39;re validating the content-type</span>
-</span><span class='line'>  <span class="c1"># class ContentTypeDetector</span>
-</span><span class='line'>  <span class="c1"># private</span>
-</span><span class='line'>  <span class="c1">#   def empty?</span>
-</span><span class='line'>  <span class="c1">#     false</span>
-</span><span class='line'>  <span class="c1">#   end</span>
-</span><span class='line'>  <span class="c1"># end</span>
-</span><span class='line'><span class="k">end</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;CORSConfiguration</span> <span class="na">xmlns=</span><span class="s">&quot;http://s3.amazonaws.com/doc/2006-03-01/&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;CORSRule&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;AllowedOrigin&gt;</span>*<span class="nt">&lt;/AllowedOrigin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;AllowedMethod&gt;</span>GET<span class="nt">&lt;/AllowedMethod&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/CORSRule&gt;</span>
+</span><span class='line'><span class="nt">&lt;/CORSConfiguration&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>You can replace the * in the AllowedOrigin to be the domain that you will be
+serving the your webpage from.  You can add multiple AllowedOrigin tags for each
+domain you need to have access to the font-face (e.g. www.example.com, example.com).</p>
 
 
 </article>
@@ -279,8 +255,8 @@ that you need to clean up (those saved by running your test).</p>
   
     
     // var disqus_developer = 1;
-    var disqus_identifier = 'http://mikeballou.com/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec/';
-    var disqus_url = 'http://mikeballou.com/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec/';
+    var disqus_identifier = 'http://mikeballou.com/blog/2013/01/25/serving-fonts-from-s3-slash-cloudfront-for-firefox/';
+    var disqus_url = 'http://mikeballou.com/blog/2013/01/25/serving-fonts-from-s3-slash-cloudfront-for-firefox/';
     var disqus_script = 'embed.js';
   
   (function () {
