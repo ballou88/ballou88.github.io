@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: hash | Mike Ballou]]></title>
-  <link href="http://ballou88.github.io/blog/categories/hash/atom.xml" rel="self"/>
-  <link href="http://ballou88.github.io/"/>
-  <updated>2013-11-27T14:25:36-08:00</updated>
-  <id>http://ballou88.github.io/</id>
+  <link href="http://mikeballou.com/blog/categories/hash/atom.xml" rel="self"/>
+  <link href="http://mikeballou.com/"/>
+  <updated>2013-11-27T14:35:25-08:00</updated>
+  <id>http://mikeballou.com/</id>
   <author>
     <name><![CDATA[Mike Ballou]]></name>
     <email><![CDATA[mikeballou@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Hash default value]]></title>
-    <link href="http://ballou88.github.io/blog/2013/08/26/hash-default-value/"/>
+    <link href="http://mikeballou.com/blog/2013/08/26/hash-default-value/"/>
     <updated>2013-08-26T15:46:11-07:00</updated>
-    <id>http://ballou88.github.io/blog/2013/08/26/hash-default-value</id>
+    <id>http://mikeballou.com/blog/2013/08/26/hash-default-value</id>
     <content type="html"><![CDATA[<p>The other day while working on a problem on <a href="http://exercism.io">exercism.io</a>
 I was wanting to keep a hash of arrays, and I wanted each key in the hash
 to default to a empty array.  So I started with</p>

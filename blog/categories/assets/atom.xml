@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: assets | Mike Ballou]]></title>
-  <link href="http://ballou88.github.io/blog/categories/assets/atom.xml" rel="self"/>
-  <link href="http://ballou88.github.io/"/>
-  <updated>2013-11-27T14:25:36-08:00</updated>
-  <id>http://ballou88.github.io/</id>
+  <link href="http://mikeballou.com/blog/categories/assets/atom.xml" rel="self"/>
+  <link href="http://mikeballou.com/"/>
+  <updated>2013-11-27T14:35:25-08:00</updated>
+  <id>http://mikeballou.com/</id>
   <author>
     <name><![CDATA[Mike Ballou]]></name>
     <email><![CDATA[mikeballou@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Serving Rails assets from the cloud]]></title>
-    <link href="http://ballou88.github.io/blog/2013/01/21/serving-rails-assets-from-the-cloud/"/>
+    <link href="http://mikeballou.com/blog/2013/01/21/serving-rails-assets-from-the-cloud/"/>
     <updated>2013-01-21T14:57:44-08:00</updated>
-    <id>http://ballou88.github.io/blog/2013/01/21/serving-rails-assets-from-the-cloud</id>
+    <id>http://mikeballou.com/blog/2013/01/21/serving-rails-assets-from-the-cloud</id>
     <content type="html"><![CDATA[<p>Recently I have had to build several high performance websites.
 These sites were simple sites but were heavy in images and we were
 expecting large amounts of traffic.  I was using heroku to host the

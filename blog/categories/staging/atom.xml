@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: staging | Mike Ballou]]></title>
-  <link href="http://ballou88.github.io/blog/categories/staging/atom.xml" rel="self"/>
-  <link href="http://ballou88.github.io/"/>
-  <updated>2013-11-27T14:25:36-08:00</updated>
-  <id>http://ballou88.github.io/</id>
+  <link href="http://mikeballou.com/blog/categories/staging/atom.xml" rel="self"/>
+  <link href="http://mikeballou.com/"/>
+  <updated>2013-11-27T14:35:25-08:00</updated>
+  <id>http://mikeballou.com/</id>
   <author>
     <name><![CDATA[Mike Ballou]]></name>
     <email><![CDATA[mikeballou@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Pushing testing branches to Heroku]]></title>
-    <link href="http://ballou88.github.io/blog/2013/01/15/pushing-testing-branches-to-heroku/"/>
+    <link href="http://mikeballou.com/blog/2013/01/15/pushing-testing-branches-to-heroku/"/>
     <updated>2013-01-15T09:47:54-08:00</updated>
-    <id>http://ballou88.github.io/blog/2013/01/15/pushing-testing-branches-to-heroku</id>
+    <id>http://mikeballou.com/blog/2013/01/15/pushing-testing-branches-to-heroku</id>
     <content type="html"><![CDATA[<p>I really love using heroku for my rails applications.  It provides me easy
 deployments, easy access to a host of add-ons, but mostly the fact that I can
 use the free plans to test/develop.  I often find that for small projects I will

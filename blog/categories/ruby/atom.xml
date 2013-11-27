@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ruby | Mike Ballou]]></title>
-  <link href="http://ballou88.github.io/blog/categories/ruby/atom.xml" rel="self"/>
-  <link href="http://ballou88.github.io/"/>
-  <updated>2013-11-27T14:25:36-08:00</updated>
-  <id>http://ballou88.github.io/</id>
+  <link href="http://mikeballou.com/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://mikeballou.com/"/>
+  <updated>2013-11-27T14:35:25-08:00</updated>
+  <id>http://mikeballou.com/</id>
   <author>
     <name><![CDATA[Mike Ballou]]></name>
     <email><![CDATA[mikeballou@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Hash default value]]></title>
-    <link href="http://ballou88.github.io/blog/2013/08/26/hash-default-value/"/>
+    <link href="http://mikeballou.com/blog/2013/08/26/hash-default-value/"/>
     <updated>2013-08-26T15:46:11-07:00</updated>
-    <id>http://ballou88.github.io/blog/2013/08/26/hash-default-value</id>
+    <id>http://mikeballou.com/blog/2013/08/26/hash-default-value</id>
     <content type="html"><![CDATA[<p>The other day while working on a problem on <a href="http://exercism.io">exercism.io</a>
 I was wanting to keep a hash of arrays, and I wanted each key in the hash
 to default to a empty array.  So I started with</p>
@@ -82,9 +82,9 @@ the block syntax you a new</p>
   
   <entry>
     <title type="html"><![CDATA[Stubbing Paperclip Attachments in Rspec]]></title>
-    <link href="http://ballou88.github.io/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec/"/>
+    <link href="http://mikeballou.com/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec/"/>
     <updated>2012-12-25T14:55:52-08:00</updated>
-    <id>http://ballou88.github.io/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec</id>
+    <id>http://mikeballou.com/blog/2012/12/25/stubbing-paperclip-attachments-in-rspec</id>
     <content type="html"><![CDATA[<p>If you are using RSpec, paperclip, and your models are validating
 the existence of attachments, you are going to want to
 stub out the saving of the attachments.  You will want to do
@@ -130,9 +130,9 @@ end
   
   <entry>
     <title type="html"><![CDATA[Taggable Mongoid Models]]></title>
-    <link href="http://ballou88.github.io/blog/2012/12/18/taggable-mongoid-models/"/>
+    <link href="http://mikeballou.com/blog/2012/12/18/taggable-mongoid-models/"/>
     <updated>2012-12-18T14:51:01-08:00</updated>
-    <id>http://ballou88.github.io/blog/2012/12/18/taggable-mongoid-models</id>
+    <id>http://mikeballou.com/blog/2012/12/18/taggable-mongoid-models</id>
     <content type="html"><![CDATA[<p>I was looking for a simple way to add tagging to my Mongoid 3+ models and most of the options I found were for Mongoid 2 only.  Luckily I stumbled upon Mongoid Simple Tags from Mauro Torres(<a href="https://github.com/chebyte">chebyte</a>) a ruby gem that supports Mongoid 3+.</p>
 
 <p>Its a nice simple way to add tagging.  Simply include &ldquo;Mongoid::Document::Taggable&rdquo; to your model.</p>
